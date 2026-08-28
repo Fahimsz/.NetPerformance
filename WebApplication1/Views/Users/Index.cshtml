@@ -1,0 +1,96 @@
+﻿@* @model List<BaseMember> *@
+@using WebApplication1.Models
+@{
+    // ViewData["Title"] = "All Users";
+    BaseMember baseMember = new BaseMember();
+    List<BaseMember> users = baseMember.getAllUsers();
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-success text-white rounded-top-4 d-flex justify-content-between align-items-center py-3 px-4">
+            <h4 class="mb-0 fw-bold">
+                <i class="bi bi-people-fill me-2"></i>All Users
+            </h4>
+            <span class="badge bg-light text-success fs-6">@users.Count users</span>
+        </div>
+        <div class="card-body p-0">
+            @if (users.Count > 0)
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4 py-3 text-muted fw-semibold" style="width: 80px;">#</th>
+                                <th class="py-3 text-muted fw-semibold">ID</th>
+                                <th class="py-3 text-muted fw-semibold">Username</th>
+                                <th class="py-3 text-muted fw-semibold">Password Hash</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int index = 1;
+                            }
+                            @foreach (var user in users)
+                            {
+                                <tr>
+                                    <td class="ps-4">
+                                        <span class="badge rounded-pill bg-success bg-opacity-10 text-success fw-semibold px-3 py-2">@index</span>
+                                    </td>
+                                    <td class="fw-semibold text-dark">@user.Id</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle bg-success bg-opacity-10 text-success me-2">
+                                                @user.Username?.Substring(0, 1).ToUpper()
+                                            </div>
+                                            <span class="fw-medium">@user.Username</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <code class="text-muted small">@user.Password</code>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="text-muted mb-2" style="font-size: 3rem;">👤</div>
+                    <h5 class="text-muted">No users found</h5>
+                    <p class="text-muted small">There are no users in the database yet.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(40, 167, 69, 0.04);
+    }
+
+    .card {
+        overflow: hidden;
+    }
+
+    .rounded-top-4 {
+        border-top-left-radius: 0.75rem !important;
+        border-top-right-radius: 0.75rem !important;
+    }
+</style>
