@@ -12,5 +12,16 @@ namespace WebApplication1.Controllers
             // return View(users);
             return View();
         }
+
+        public IActionResult Edit(int id)
+        {
+            BaseMember baseMember = new BaseMember();
+            BaseMember? user = baseMember.getUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
     }
 }

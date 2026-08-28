@@ -137,5 +137,28 @@ public class BaseMember
         int rowsAffected = command.ExecuteNonQuery();
         return rowsAffected > 0;
     }
-}
 
+    public BaseMember? getUserById(int id)
+    {
+        using var connection = new NpgsqlConnection(_connectionString);
+        using var command = new NpgsqlCommand("SELECT * FROM users WHERE id = @Id", connection);
+
+        command.CommandType = CommandType.Text;
+        command.CommandTimeout = 0;
+        command.Parameters.AddWithValue("@Id", id);
+
+        connection.Open();
+        using var reader = command.ExecuteReader();
+        if (reader.Read())
+        {
+            return new BaseMember
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Username = reader["Username"].ToString() ?? string.Empty,
+                Password = reader["PasswordHash"].ToString() ?? string.Empty
+            };
+        }
+
+        return null;
+    }
+}
