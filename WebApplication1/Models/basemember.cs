@@ -158,7 +158,7 @@ public class BaseMember
                 Password = reader["PasswordHash"].ToString() ?? string.Empty
             };
         }
-
         return null;
     }
+
 }
