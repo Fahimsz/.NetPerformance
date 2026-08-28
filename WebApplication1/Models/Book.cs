@@ -30,11 +30,11 @@ public class Book
     public string Isbn { get; set; } = string.Empty;
 
 
-    public DataTable validateasTable(string username, string password)
+    public DataTable validateasTable(string bookname, string author, string isbn)
     {
         DataTable dt = new DataTable();
         using var connection = new NpgsqlConnection(_connectionString);
-        using var command = new NpgsqlCommand("SELECT * FROM Users", connection);
+        using var command = new NpgsqlCommand("SELECT * FROM books", connection);
 
         command.CommandType = CommandType.Text;
         command.CommandTimeout = 0;
@@ -46,7 +46,7 @@ public class Book
         return dt;
     }
 
-    public DataTable validateasTableBySp(string username, string password)
+    public DataTable validateasTableBySp(string bookname, string author, string isbn )
     {
         DataTable dt = new DataTable();
         using var connection = new NpgsqlConnection(_connectionString);
@@ -55,8 +55,9 @@ public class Book
         command.CommandType = CommandType.StoredProcedure;
         command.CommandTimeout = 0;
         command.Parameters.Clear();
-        command.Parameters.AddWithValue("@Username", username);
-        command.Parameters.AddWithValue("@PasswordHash", password);
+        command.Parameters.AddWithValue("@Bookname", bookname);
+        command.Parameters.AddWithValue("@Author", author);
+        command.Parameters.AddWithValue("@Isbn", isbn);
 
         using var adapter = new NpgsqlDataAdapter(command);
         connection.Open();
@@ -64,16 +65,19 @@ public class Book
         return dt;
     }
 
-    public List<Book> validateasList(string username, string password)
+    public List<Book> validateasList(string bookname, string author, string isbn)
     {
         List<Book> bookS = new List<Book>();
 
         using var connection = new NpgsqlConnection(_connectionString);
-        using var command = new NpgsqlCommand("SELECT * FROM users", connection);
+        using var command = new NpgsqlCommand("SELECT * FROM books WHERE bookname = @Bookname AND author = @Author AND isbn = @Isbn", connection);
 
         command.CommandType = CommandType.Text;
         command.CommandTimeout = 0;
         command.Parameters.Clear();
+        command.Parameters.AddWithValue("@Bookname", bookname);
+        command.Parameters.AddWithValue("@Author", author);
+        command.Parameters.AddWithValue("@Isbn", isbn);
 
         connection.Open();
         using var reader = command.ExecuteReader();
@@ -83,10 +87,10 @@ public class Book
             {
                 Book book = new Book
                 {
-                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                    Bookname = reader["Bookname"].ToString() ?? string.Empty,
-                    Author = reader["Author"].ToString() ?? string.Empty,
-                    Isbn = reader["Isbn"].ToString() ?? string.Empty
+                    Id = reader.GetInt32(reader.GetOrdinal("id")),
+                    Bookname = reader["bookname"].ToString() ?? string.Empty,
+                    Author = reader["author"].ToString() ?? string.Empty,
+                    Isbn = reader["isbn"].ToString() ?? string.Empty
                 };
                 bookS.Add(book);
             }
@@ -115,7 +119,7 @@ public class Book
         {
             Book newbook = new Book
             {
-                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Id = reader.GetInt32(reader.GetOrdinal("id")),
                 Bookname = reader["bookname"].ToString() ?? string.Empty,
                 Author = reader["author"].ToString() ?? string.Empty,
                 Isbn = reader["isbn"].ToString() ?? string.Empty
@@ -126,7 +130,7 @@ public class Book
         return books;
     }
 
-    public bool addBook(string bookname, string author, string isbn)
+    public bool AddBook(string bookname, string author, string isbn)
     {
         using var connection = new NpgsqlConnection(_connectionString);
         using var command = new NpgsqlCommand(
