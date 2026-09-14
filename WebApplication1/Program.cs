@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 using WebApplication1.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
 builder.Services.AddDbContext<AppDbContext> (options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ProductDatabase")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("ProductDatabase")));
 
 var app = builder.Build();
 
