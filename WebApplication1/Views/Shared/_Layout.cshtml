@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand bg-info rounded-3 p-2 hover:bg-primary" asp-area="" asp-controller="Home" asp-action="Index">My Application</a>
+                <a class="navbar-brand bg-info rounded-3 p-2 " asp-area="" asp-controller="Home" asp-action="Index">My Application</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,9 @@
                         <li class="nav-item">
                             <a class="nav-link bg-danger rounded-3 ms-3 text-light" asp-area="" asp-controller="Books" asp-action="AddBook">AddBook</a>
                         </li>
-                       
+                        <li class="nav-item">
+                            <a class="nav-link bg-danger rounded-3 ms-3 text-light" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                        </li>
                     </ul>
                 </div>
             </div>
