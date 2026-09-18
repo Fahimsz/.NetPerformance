@@ -18,11 +18,14 @@ namespace WebApplication1.Controllers
             var products = await _context.Products.ToListAsync();
             return View(products);
         }
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
             if (!ModelState.IsValid)
